@@ -15,10 +15,10 @@ public:
     void setPort(int port);
 
     int getMaxConnect();
-    void setMaxConnect();
+    void setMaxConnect(int maxConnect);
 
     void connect();
-    bool listen();
+    bool beginListen();
     bool unlisten();
 
 
