@@ -21,6 +21,8 @@ public:
     bool beginListen();
     bool unlisten();
 
+    void beginAccept();
+
 
 private:
     int port;

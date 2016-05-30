@@ -2,13 +2,17 @@
 #include <assert.h>
 #include <stdio.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 #include <string.h>
 
 #include "TcpServer.h"
 
 #define MINPORT 1
 #define MAXPORT 65535
+#define BUFFER_SIZE 512
 
 
 
@@ -74,6 +78,8 @@ void TcpServer::connect()
 
 }
 
+
+
 bool TcpServer::beginListen()
 {
     assert(this->server_fd != 0);
@@ -87,7 +93,34 @@ bool TcpServer::beginListen()
     return true;
 }
 
+void TcpServer::beginAccept()
+{
+    struct sockaddr_in client_addr;
+    socklen_t length = sizeof(client_addr);
+    int conn = accept(this->server_fd, (struct sockaddr*)&client_addr, &length);
+    
+    if(conn < 0)
+    {
+#ifdef DEBUG
+        perror("connect err");
+#endif
+        close(conn);
+        return ;
+    }
 
+    char buffer[BUFFER_SIZE];
+    while(true)
+    {
+        memset(buffer, 0, sizeof(buffer));
+        int len = recv(conn, buffer, sizeof(buffer), 0);
+        if(len != 0)
+        {
+            printf("%d", len);
+            printf("%s", buffer);
+        }
+    }
+    close(conn);
+}
 
 
 

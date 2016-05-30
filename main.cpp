@@ -12,5 +12,7 @@ int main()
 
     tcpServer->beginListen();
 
+    tcpServer->beginAccept();
+
     return 0;
 }
