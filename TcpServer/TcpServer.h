@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-
+#include <netinet/in.h>
 
 
 class TcpServer
@@ -28,4 +28,5 @@ private:
     int port;
     int maxConnect;
     int server_fd;
+    struct sockaddr_in s_socket;
 };

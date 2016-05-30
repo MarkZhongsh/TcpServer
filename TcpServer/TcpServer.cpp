@@ -55,7 +55,6 @@ void TcpServer::connect()
     //端口不能超过范围
     assert(this->port >= MINPORT && this->port < MAXPORT);
 
-    struct sockaddr_in s_socket;
     if(( this->server_fd = socket(AF_INET, SOCK_STREAM, 0)))
     {
 #ifdef DEBUG
@@ -63,9 +62,9 @@ void TcpServer::connect()
         exit(1);
 #endif
     }
-    s_socket.sin_family = AF_INET;
-    s_socket.sin_port = htons(port);
-    s_socket.sin_addr.s_addr = INADDR_ANY;
+    this->s_socket.sin_family = AF_INET;
+    this->s_socket.sin_port = htons(port);
+    this->s_socket.sin_addr.s_addr = htonl(INADDR_ANY);
     bzero(&(s_socket.sin_zero),8);
 
     if(bind(this->server_fd, (struct sockaddr *)& s_socket, sizeof(struct sockaddr)) == -1)
@@ -98,7 +97,7 @@ void TcpServer::beginAccept()
     struct sockaddr_in client_addr;
     socklen_t length = sizeof(client_addr);
     int conn = accept(this->server_fd, (struct sockaddr*)&client_addr, &length);
-    
+
     if(conn < 0)
     {
 #ifdef DEBUG
@@ -107,7 +106,7 @@ void TcpServer::beginAccept()
         close(conn);
         return ;
     }
-
+    
     char buffer[BUFFER_SIZE];
     while(true)
     {
@@ -115,8 +114,8 @@ void TcpServer::beginAccept()
         int len = recv(conn, buffer, sizeof(buffer), 0);
         if(len != 0)
         {
-            printf("%d", len);
-            printf("%s", buffer);
+            printf("%d\n", len);
+            printf("%s\n", buffer);
         }
     }
     close(conn);

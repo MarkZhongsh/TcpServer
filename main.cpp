@@ -1,7 +1,5 @@
-#include <iostream>
 
 #include "TcpServer/TcpServer.h"
-using namespace std;
 
 int main()
 {
@@ -12,6 +10,7 @@ int main()
 
     tcpServer->beginListen();
 
+    printf("%s\n",__FILE__);
     tcpServer->beginAccept();
 
     return 0;
