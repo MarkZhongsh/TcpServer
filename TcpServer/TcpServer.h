@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
 
-
+#define TCP_BUFFER_SIZE 1024
 //class TcpServer
 //{
 //public:
@@ -60,11 +61,13 @@ public:
 private:
     int bindSocket();
     int listenSocket();
+    int acceptFromClient(struct sockaddr_in &client);
+    int sendMsg(int conn, void *data, unsigned int length);
 private:
     int port;
     int maxConnet;
     int connFd;
-    struct sockaddr_in socket;
+    struct sockaddr_in m_Socket;
 
 
 };

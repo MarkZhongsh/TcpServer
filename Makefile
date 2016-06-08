@@ -1,11 +1,16 @@
-test : main.o TcpServer.o
-	g++ -o test TcpServer.o main.o 
+CC=g++ -ggdb3 -D DEBUG
 
-TcpServer.o : TcpServer/TcpServer.h TcpServer/TcpServer.cpp
-	g++ -ggdb3 -DDEBUG -c -o TcpServer.o TcpServer/TcpServer.cpp -I TcpServer
+test : main.o TcpServer.o LogUtil.o
+	$(CC) -o test TcpServer.o main.o LogUtil.o
+
+TcpServer.o : TcpServer/TcpServer.h TcpServer/TcpServer.cpp Util/LogUtil.cpp
+	$(CC) -c -o TcpServer.o TcpServer/TcpServer.cpp -I TcpServer
+
+LogUtil.o : Util/LogUtil.h
+	$(CC) -c -o LogUtil.o Util/LogUtil.cpp -I Util
 
 main.o : main.cpp
-	g++ -ggdb3 -DDEBUG -c main.cpp TcpServer/TcpServer.cpp 
+	$(CC) -c main.cpp 
 
 clean:
-	rm -rf main.o TcpServer.o test
+	rm -rf main.o TcpServer.o LogUtil.o test
